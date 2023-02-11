@@ -2,10 +2,18 @@
 import { weather_data } from './data.js';
 
 let loadDayForecastData = () => {
-    let [ dia] = weather_data;
-    let { city_code: city_code1 , city: city1, date : date1, maxtemperature : maxtemperature1, mintemperature:mintemperature1, cloudiness:cloudiness1, wind:wind1,rainfall:rainfall1, forecast_today:forecast_today1, forecast_week:forecast_week1 } = dia;
-    
-    let message_dia = ` <div class="d-flex justify-content-between mt-2 mb-2">
+  let dia;
+  let message_dia;
+  let mensaje_2;
+
+for (let elemento of weather_data)
+{
+  dia = elemento;
+  let { city_code: city_code1 , city: city1, date : date1, maxtemperature : maxtemperature1, mintemperature:mintemperature1, cloudiness:cloudiness1, wind:wind1,rainfall:rainfall1, forecast_today:forecast_today1, forecast_week:forecast_week1 } = dia;
+  
+  if (city1 == "Guayaquil")
+{
+  message_dia = ` <div class="d-flex justify-content-between mt-2 mb-2">
     <div class="me-4 d-flex text-golden">
       <i class="material-icons">location_on</i><h5 id="city" class="text-golden">${city1} </h5>
     </div>
@@ -30,28 +38,18 @@ let loadDayForecastData = () => {
     </div>
   </div>`
 
-  let listOfElements = document.getElementsByClassName('card-body position-relative z-index-1 p-3');
-  let [ first,second] = listOfElements;
-  first.innerHTML = message_dia;
-  second.innerHTML = message_dia;
-  
-let [tiempo_hoy]= forecast_today1; 
-let {forecast_today:forecast_today2, lapse:lapse1,text:text2,temperature:temperature2,forecast:forecast2,icon:icon2}=tiempo_hoy;
-let [tiempo_semana]= forecast_week1; 
-let {day:day3 ,text:text3 ,date:date3,temperature:temperature3, icon:icon3}=tiempo_semana
-
-  let mensaje_2=`<div class="col-md-6 col-6">
+  mensaje_2=`<div class="col-md-6 col-6">
   <div class="card">
     <div class="card-header mx-4 p-3 text-center">
       <div class="icon icon-shape icon-lg bg-gradient-info shadow text-center border-radius-lg">
-        <i id="late_icon" class="material-icons opacity-10">${icon2}</i>
+        <i id="late_icon" class="material-icons opacity-10">${forecast_today1[0]["icon"]}</i>
       </div>
     </div>
     <div class="card-body pt-0 p-3 text-center text-truncate">
-      <h3 id="late_temperature" class="text-center mb-0">${temperature2}</h3>
-      <span id="late_forecast" class="text-md">${forecast2}</span>
+      <h3 id="late_temperature" class="text-center mb-0">${forecast_today1[0]["temperature"]}</h3>
+      <span id="late_forecast" class="text-md">${forecast_today1[0]["forecast"]}</span>
       <hr class="horizontal dark my-3">
-      <h4 id="late_text" class="mb-0 text-md">${text2}</h4>
+      <h4 id="late_text" class="mb-0 text-md">${forecast_today1[0]["text"]}</h4>
     </div>
   </div>
 </div>
@@ -59,22 +57,28 @@ let {day:day3 ,text:text3 ,date:date3,temperature:temperature3, icon:icon3}=tiem
   <div class="card">
     <div class="card-header mx-4 p-3 text-center">
       <div class="icon icon-shape icon-lg bg-gradient-info shadow text-center border-radius-lg">
-        <i id="night_icon" class="material-icons opacity-10">${icon3}</i>
+        <i id="night_icon" class="material-icons opacity-10">${forecast_today1[1]["icon"]}</i>
       </div>
     </div>
     <div class="card-body pt-0 p-3 text-center text-truncate">
-      <h3 id="night_temperature" class="text-center mb-0">${temperature3}</h3>
-      <span id="night_forecast" class="text-md">${forecast2}</span>
+      <h3 id="night_temperature" class="text-center mb-0">${forecast_today1[1]["temperature"]}</h3>
+      <span id="night_forecast" class="text-md">${forecast_today1[1]["forecast"]}</span>
       <hr class="horizontal dark my-3">
-      <h4 id="night_text" class="mb-0 text-md"><${text3}</h4>
+      <h4 id="night_text" class="mb-0 text-md"><${forecast_today1[1]["text"]}</h4>
     </div>
   </div>
 </div>`
-
-/*let listOfElements2 = document.getElementsByClassName('row');
+}
+}
+ 
+  let listOfElements = document.getElementsByClassName('card-body position-relative z-index-1 p-3');
+  let [ first] = listOfElements;
+  first.innerHTML = message_dia;
+ 
+let listOfElements2 = document.getElementsByClassName('row');
   let [ first2, second2, third2] = listOfElements2;
   third2.innerHTML = mensaje_2;
-*/
+
 }
 
 let loadWeekForecastData = () => {
