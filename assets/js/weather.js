@@ -64,7 +64,7 @@ for (let elemento of weather_data)
       <h3 id="night_temperature" class="text-center mb-0">${forecast_today1[1]["temperature"]}</h3>
       <span id="night_forecast" class="text-md">${forecast_today1[1]["forecast"]}</span>
       <hr class="horizontal dark my-3">
-      <h4 id="night_text" class="mb-0 text-md"><${forecast_today1[1]["text"]}</h4>
+      <h4 id="night_text" class="mb-0 text-md">${forecast_today1[1]["text"]}</h4>
     </div>
   </div>
 </div>`
@@ -81,9 +81,9 @@ let listOfElements2 = document.getElementsByClassName('row');
 
 }
 
-let loadWeekForecastData = (citySelected) => {
+let loadWeekForecastData = (ciudad_seleccionada) => {
 
-    const dataCity = weather_data.find( e => e.city === citySelected);
+    const dataCity = weather_data.find( e => e.city === ciudad_seleccionada);
     const { forecast_week } = dataCity;
     const objListForecastWeek = document.getElementById("forecast_week");
     let templateForecast = '';
@@ -105,11 +105,11 @@ let loadWeekForecastData = (citySelected) => {
     objListForecastWeek.innerHTML = templateForecast;
 }
 
-const loadCity = () => {
-    const objCities = document.getElementById('dropdownMenuButton');
-    const cities = weather_data.map(e => e.city);
-    cities.map(e => {
-        objCities.innerHTML += `<option class="dropdown-item" value="${e}">${e}</option>`;
+let loadCity = () => {
+    let objciudades = document.getElementById('dropdownMenuButton');
+    let ciudad = weather_data.map(e => e.city);
+    ciudad.map(e => {
+        objciudades.innerHTML += `<option class="dropdown-item" value="${e}">${e}</option>`;
     });
 }
 
@@ -118,18 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
     loadDayForecastData('Guayaquil');
 })
 
-const btnCity = document.getElementById("dropdownMenuButton");
+let btnCity = document.getElementById("dropdownMenuButton");
 
 btnCity.addEventListener('change', (event) => {
-    const citySelected = event.target.value;
+    let ciudad_seleccionada = event.target.value;
     document.getElementById("forecast_week").innerHTML = '';
-    loadDayForecastData(citySelected);
+    loadDayForecastData(ciudad_seleccionada);
 })
 
-const btnCargar = document.getElementById("loadinfo");
+let btnCargar = document.getElementById("loadinfo");
 
 btnCargar.addEventListener('click', (event) => {
-    const citySelected = document.getElementById("dropdownMenuButton").value;
-    loadWeekForecastData(citySelected);
+    let ciudad_seleccionada = document.getElementById("dropdownMenuButton").value;
+    loadWeekForecastData(ciudad_seleccionada);
 })
-
