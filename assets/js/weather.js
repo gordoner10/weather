@@ -1,7 +1,7 @@
 
 import { weather_data } from './data.js';
 
-let loadDayForecastData = () => {
+let loadDayForecastData = (ciudad_seleccionada) => {
   let dia;
   let message_dia;
   let mensaje_2;
@@ -11,7 +11,7 @@ for (let elemento of weather_data)
   dia = elemento;
   let { city_code: city_code1 , city: city1, date : date1, maxtemperature : maxtemperature1, mintemperature:mintemperature1, cloudiness:cloudiness1, wind:wind1,rainfall:rainfall1, forecast_today:forecast_today1, forecast_week:forecast_week1 } = dia;
   
-  if (city1 == "Guayaquil")
+  if (city1 === ciudad_seleccionada)
 {
   message_dia = ` <div class="d-flex justify-content-between mt-2 mb-2">
     <div class="me-4 d-flex text-golden">
@@ -81,11 +81,55 @@ let listOfElements2 = document.getElementsByClassName('row');
 
 }
 
-let loadWeekForecastData = () => {
-	
-	
+let loadWeekForecastData = (citySelected) => {
+
+    const dataCity = weather_data.find( e => e.city === citySelected);
+    const { forecast_week } = dataCity;
+    const objListForecastWeek = document.getElementById("forecast_week");
+    let templateForecast = '';
+
+    forecast_week.map(e => {
+        const { text, date, temperature: { min, max }, icon } = e;
+        templateForecast += `<li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                    <div class="d-flex flex-column">
+                    <h6 class="mb-1 text-dark font-weight-bold text-sm">${text}</h6>
+                    <span class="text-xs">${date}</span>
+                    </div>
+                    <div class="d-flex align-items-center ">
+                    <span class="font-weight-bold text-dark mx-2">${max}</span> |  <span class="text-dark mx-2">${min}</span>
+                    <div class="ms-4"><i class="material-icons fs-2 me-1 rainy">${icon}</i></div>
+                    </div>
+                </li>`;
+        
+    })
+    objListForecastWeek.innerHTML = templateForecast;
 }
 
+const loadCity = () => {
+    const objCities = document.getElementById('dropdownMenuButton');
+    const cities = weather_data.map(e => e.city);
+    cities.map(e => {
+        objCities.innerHTML += `<option class="dropdown-item" value="${e}">${e}</option>`;
+    });
+}
 
-loadDayForecastData();
-loadWeekForecastData();
+document.addEventListener('DOMContentLoaded', () => {
+    loadCity();
+    loadDayForecastData('Guayaquil');
+})
+
+const btnCity = document.getElementById("dropdownMenuButton");
+
+btnCity.addEventListener('change', (event) => {
+    const citySelected = event.target.value;
+    document.getElementById("forecast_week").innerHTML = '';
+    loadDayForecastData(citySelected);
+})
+
+const btnCargar = document.getElementById("loadinfo");
+
+btnCargar.addEventListener('click', (event) => {
+    const citySelected = document.getElementById("dropdownMenuButton").value;
+    loadWeekForecastData(citySelected);
+})
+
